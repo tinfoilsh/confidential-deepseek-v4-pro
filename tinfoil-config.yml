@@ -1,5 +1,5 @@
 cvm-version: 0.7.5
-cpus: 32
+cpus: 64
 gpus: 8
 memory: 524288
 
