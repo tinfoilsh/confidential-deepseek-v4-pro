@@ -10,7 +10,7 @@ models:
 
 containers:
   - name: "deepseek-v4-pro"
-    image: "vllm/vllm-openai:deepseekv4-cu130@sha256:f224ccc1f352e19ffc9e7e509a1d4b68ddb97cb664039ffbf743c4abe494988c"
+    image: "vllm/vllm-openai:deepseekv4-cu130@sha256:694f31f2d673a4d5dbbca4820f6d96dd09b2ddc74ccc868b677b89422e7ac2f8"
     runtime: nvidia
     gpus: all
     ipc: host
@@ -23,14 +23,16 @@ containers:
       "--block-size", "256",
       "--enable-expert-parallel",
       "--data-parallel-size", "8",
-      "--compilation-config", "{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\", \"custom_ops\":[\"all\"]}",
       "--max-model-len", "800000",
       "--gpu-memory-utilization", "0.95",
+      "--max-num-seqs", "512",
+      "--max-num-batched-tokens", "512",
+      "--no-enable-flashinfer-autotune",
+      "--compilation-config", "{\"mode\": 0, \"cudagraph_mode\": \"FULL_DECODE_ONLY\"}",
       "--tokenizer-mode", "deepseek_v4",
       "--tool-call-parser", "deepseek_v4",
       "--enable-auto-tool-choice",
       "--reasoning-parser", "deepseek_v4",
-      "--speculative-config", "{\"method\":\"mtp\",\"num_speculative_tokens\":2}",
       "--served-model-name", "deepseek-v4-pro",
       "--port", "8001"
     ]
