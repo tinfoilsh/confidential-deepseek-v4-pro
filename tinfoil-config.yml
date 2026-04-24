@@ -6,7 +6,7 @@ memory: 524288
 models:
   - name: "deepseek-v4-pro"
     repo: "deepseek-ai/DeepSeek-V4-Pro@0366e4e064385807ea86b088a5c6c878ff23343b"
-    mpk: "TODO_MODELPACK"
+    mpk: "4f5329f8b153498c9979d7ca3e0508af4ee2ebff19843b6f1a551af3df8b4ba6_864744366080_d8f50012-fffb-5715-962f-f9f405f9cf86"
 
 containers:
   - name: "deepseek-v4-pro"
@@ -17,7 +17,7 @@ containers:
     env:
       - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
     command: [
-      "--model", "/tinfoil/mpk/mpk-TODO_MODELPACK_HASH",
+      "--model", "/tinfoil/mpk/mpk-4f5329f8b153498c9979d7ca3e0508af4ee2ebff19843b6f1a551af3df8b4ba6",
       "--trust-remote-code",
       "--kv-cache-dtype", "fp8",
       "--block-size", "256",
