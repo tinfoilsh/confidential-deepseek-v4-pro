@@ -1,0 +1,49 @@
+cvm-version: 0.7.5
+cpus: 32
+gpus: 8
+memory: 524288
+
+models:
+  - name: "deepseek-v4-pro"
+    repo: "deepseek-ai/DeepSeek-V4-Pro@0366e4e064385807ea86b088a5c6c878ff23343b"
+    mpk: "TODO_MODELPACK"
+
+containers:
+  - name: "deepseek-v4-pro"
+    image: "vllm/vllm-openai:deepseekv4-cu130@sha256:f224ccc1f352e19ffc9e7e509a1d4b68ddb97cb664039ffbf743c4abe494988c"
+    runtime: nvidia
+    gpus: all
+    ipc: host
+    env:
+      - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
+    command: [
+      "--model", "/tinfoil/mpk/mpk-TODO_MODELPACK_HASH",
+      "--trust-remote-code",
+      "--kv-cache-dtype", "fp8",
+      "--block-size", "256",
+      "--enable-expert-parallel",
+      "--data-parallel-size", "8",
+      "--compilation-config", "{\"cudagraph_mode\":\"FULL_AND_PIECEWISE\", \"custom_ops\":[\"all\"]}",
+      "--max-model-len", "800000",
+      "--gpu-memory-utilization", "0.95",
+      "--tokenizer-mode", "deepseek_v4",
+      "--tool-call-parser", "deepseek_v4",
+      "--enable-auto-tool-choice",
+      "--reasoning-parser", "deepseek_v4",
+      "--speculative-config", "{\"method\":\"mtp\",\"num_speculative_tokens\":2}",
+      "--served-model-name", "deepseek-v4-pro",
+      "--port", "8001"
+    ]
+
+shim:
+  upstream-port: 8001
+  authenticated: true
+  authenticated-endpoints:
+    - /v1/chat/completions
+    - /v1/responses
+  paths:
+    - /v1/chat/completions
+    - /v1/models
+    - /v1/responses
+    - /metrics
+    - /health
