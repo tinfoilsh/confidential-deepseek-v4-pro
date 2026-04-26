@@ -1,23 +1,23 @@
 cvm-version: 0.7.5
-cpus: 64
+cpus: 32
 gpus: 8
 memory: 524288
 
 models:
   - name: "deepseek-v4-pro"
-    repo: "deepseek-ai/DeepSeek-V4-Pro@0366e4e064385807ea86b088a5c6c878ff23343b"
-    mpk: "4f5329f8b153498c9979d7ca3e0508af4ee2ebff19843b6f1a551af3df8b4ba6_864744366080_d8f50012-fffb-5715-962f-f9f405f9cf86"
+    repo: "deepseek-ai/DeepSeek-V4-Pro@5e74e6987d2007a261efc812d357ae75f9b8263a"
+    mpk: "78bfe1473bb0ba0430b62822c7088e54014ef5c72b9dcc79aa1907f3bb451064_864744366080_35b772d4-2c2f-5c1f-a373-aa8d6db5ee04"
 
 containers:
   - name: "deepseek-v4-pro"
-    image: "vllm/vllm-openai:deepseekv4-cu130@sha256:694f31f2d673a4d5dbbca4820f6d96dd09b2ddc74ccc868b677b89422e7ac2f8"
+    image: "vllm/vllm-openai:deepseekv4-cu130@sha256:2e05966d05579729137714d16035f0cb3b9f0fc1586fbd009753868ee9afc68b"
     runtime: nvidia
     gpus: all
     ipc: host
     env:
       - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
     command: [
-      "--model", "/tinfoil/mpk/mpk-4f5329f8b153498c9979d7ca3e0508af4ee2ebff19843b6f1a551af3df8b4ba6",
+      "--model", "/tinfoil/mpk/mpk-78bfe1473bb0ba0430b62822c7088e54014ef5c72b9dcc79aa1907f3bb451064",
       "--trust-remote-code",
       "--kv-cache-dtype", "fp8",
       "--block-size", "256",
