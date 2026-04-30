@@ -19,7 +19,7 @@ containers:
       - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
       - VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS: "0"
     command: [
-      "--model", "/tinfoil/mpk/mpk-fbae9c191378f86ef4cc6541aebd7c3f6679ddb395cb7851c587d8d7d1bca096_864744366080",
+      "--model", "/tinfoil/mpk/mpk-fbae9c191378f86ef4cc6541aebd7c3f6679ddb395cb7851c587d8d7d1bca096",
       "--trust-remote-code",
       "--kv-cache-dtype", "fp8",
       "--block-size", "256",
