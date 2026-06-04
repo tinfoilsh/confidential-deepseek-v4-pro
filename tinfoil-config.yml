@@ -1,4 +1,4 @@
-cvm-version: 0.7.5
+cvm-version: 0.10.2
 cpus: 32
 gpus: 8
 memory: 524288
@@ -10,11 +10,16 @@ models:
 
 containers:
   - name: "deepseek-v4-pro"
-    image: "vllm/vllm-openai:v0.20.1-ubuntu2404@sha256:a36517a2adbf237be1f6c6fe5a69febf548141ad37debeb929b78807f2f35e3f"
+    image: "vllm/vllm-openai:v0.22.0@sha256:0fec7ec5f3e6bc168e54899935fb0557da908a4832a1dbc88e2debcf2f889416"
     runtime: nvidia
     gpus: all
     ipc: host
     restart: always
+    read_only: false
+    cap_add:
+      - IPC_LOCK
+      - SYS_RESOURCE
+      - SYS_NICE
     env:
       - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
       - VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS: "0"
@@ -43,6 +48,9 @@ containers:
       interval: 30s
       timeout: 5s
       start_period: 60m
+    tmpfs:
+      /tmp: size=512m,mode=1777,exec
+      /root: size=2g,mode=0700,exec
 
 shim:
   upstream-port: 8001
