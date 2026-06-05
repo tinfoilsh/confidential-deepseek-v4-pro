@@ -1,7 +1,7 @@
-cvm-version: 0.7.5
+cvm-version: 0.10.4
 cpus: 32
-gpus: 8
 memory: 524288
+gpus: 8
 
 models:
   - name: "deepseek-v4-pro"
@@ -10,34 +10,23 @@ models:
 
 containers:
   - name: "deepseek-v4-pro"
-    image: "vllm/vllm-openai:v0.20.1-ubuntu2404@sha256:a36517a2adbf237be1f6c6fe5a69febf548141ad37debeb929b78807f2f35e3f"
+    image: "vllm/vllm-openai:v0.22.0@sha256:0fec7ec5f3e6bc168e54899935fb0557da908a4832a1dbc88e2debcf2f889416"
     runtime: nvidia
     gpus: all
-    ipc: host
     restart: always
     env:
       - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
       - VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS: "0"
-    command: [
-      "--model", "/tinfoil/mpk/mpk-fbae9c191378f86ef4cc6541aebd7c3f6679ddb395cb7851c587d8d7d1bca096",
-      "--trust-remote-code",
-      "--kv-cache-dtype", "fp8",
-      "--block-size", "256",
-      "--enable-expert-parallel",
-      "--data-parallel-size", "8",
-      "--max-model-len", "800000",
-      "--gpu-memory-utilization", "0.95",
-      "--max-num-seqs", "512",
-      "--max-num-batched-tokens", "512",
-      "--no-enable-flashinfer-autotune",
-      "--compilation-config", "{\"mode\": 0, \"cudagraph_mode\": \"FULL_DECODE_ONLY\"}",
-      "--tokenizer-mode", "deepseek_v4",
-      "--tool-call-parser", "deepseek_v4",
-      "--enable-auto-tool-choice",
-      "--reasoning-parser", "deepseek_v4",
-      "--served-model-name", "deepseek-v4-pro",
-      "--port", "8001"
-    ]
+      - PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+    command: ["--model", "/tinfoil/mpk/mpk-fbae9c191378f86ef4cc6541aebd7c3f6679ddb395cb7851c587d8d7d1bca096", "--trust-remote-code",
+      "--kv-cache-dtype", "fp8", "--block-size", "256", "--enable-expert-parallel", "--data-parallel-size", "8", "--max-model-len",
+      "800000", "--gpu-memory-utilization", "0.95", "--max-num-seqs", "512", "--max-num-batched-tokens", "512", "--no-enable-flashinfer-autotune",
+      "--compilation-config", "{\"mode\": 0, \"cudagraph_mode\": \"FULL_DECODE_ONLY\"}", "--tokenizer-mode", "deepseek_v4",
+      "--tool-call-parser", "deepseek_v4", "--enable-auto-tool-choice", "--reasoning-parser", "deepseek_v4", "--served-model-name",
+      "deepseek-v4-pro", "--scheduling-policy", "priority", "--port", "8001"]
+    tmpfs:
+      /tmp: size=512m,mode=1777,exec
+      /root: size=2g,mode=0700,exec
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:8001/health"]
       interval: 30s
