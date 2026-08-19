@@ -10,6 +10,7 @@ models:
 
 containers:
   - name: "deepseek-v4-pro"
+    models: ["deepseek-v4-pro"]
     image: "vllm/vllm-openai:v0.22.0@sha256:0fec7ec5f3e6bc168e54899935fb0557da908a4832a1dbc88e2debcf2f889416"
     runtime: nvidia
     gpus: all
@@ -18,7 +19,7 @@ containers:
       - VLLM_ENGINE_READY_TIMEOUT_S: "3600"
       - VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS: "0"
       - PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
-    command: ["--model", "/tinfoil/mpk/mpk-fbae9c191378f86ef4cc6541aebd7c3f6679ddb395cb7851c587d8d7d1bca096", "--trust-remote-code",
+    command: ["--model", "/tinfoil/models/deepseek-v4-pro", "--trust-remote-code",
       "--kv-cache-dtype", "fp8", "--block-size", "256", "--enable-expert-parallel", "--data-parallel-size", "8", "--max-model-len",
       "800000", "--gpu-memory-utilization", "0.95", "--max-num-seqs", "512", "--max-num-batched-tokens", "512", "--no-enable-flashinfer-autotune",
       "--compilation-config", "{\"mode\": 0, \"cudagraph_mode\": \"FULL_DECODE_ONLY\"}", "--tokenizer-mode", "deepseek_v4",
